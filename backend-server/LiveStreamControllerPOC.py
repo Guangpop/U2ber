@@ -37,20 +37,40 @@ def list_broadcasts(youtube_client, broadcast_status):
     while list_broadcasts_request:
         list_broadcasts_response = list_broadcasts_request.execute()
 
-        print('Response : {}'.format(list_broadcasts_response))
+        # print('Response : {}'.format(list_broadcasts_response))
 
         for broadcast in list_broadcasts_response.get('items', []):
-            print('%s (%s)' % (broadcast['snippet']['title'], broadcast['id']))
+            print('%s (%s)(liveChatId: %s)' % (broadcast['snippet']['title'], broadcast['id'], broadcast['snippet']['liveChatId']))
 
         list_broadcasts_request = youtube.liveBroadcasts().list_next(
             list_broadcasts_request, list_broadcasts_response)
 
 
-# def get_live_chats(youtube_client):
-#     request = youtube_client.liveChatMessages().list(liveChatId='abc123', part='id,snippet')
-#     response = request.execute()
-#     print('{0}'.format(response))
-#
+def list_streams(youtube):
+    print("Live streams:")
+
+    list_streams_request = youtube.liveStreams().list(
+        part="id,snippet",
+        mine=True,
+        maxResults=50
+    )
+
+    while list_streams_request:
+        list_streams_response = list_streams_request.execute()
+
+        for stream in list_streams_response.get("items", []):
+            print("%s (%s)" % (stream["snippet"]["title"], stream["id"]))
+
+
+        list_streams_request = youtube.liveStreams().list_next(
+            list_streams_request, list_streams_response)
+
+
+def get_live_chats(youtube_client):
+    request = youtube_client.liveChatMessages().list(liveChatId='Cg0KC1l0X1VqaW5UeUI4', part='id,snippet')
+    response = request.execute()
+    print('{0}'.format(response))
+
 
 
 def get_credentials(args):
@@ -81,7 +101,8 @@ if __name__ == '__main__':
     youtube = get_authenticated_service(args)
     try:
         list_broadcasts(youtube, args.broadcast_status)
-        # get_live_chats(youtube)
+        get_live_chats(youtube)
         # list_broadcasts(youtube, 'all')
+        list_streams(youtube)
     except HttpError as e:
         print('An HTTP error %d occurred:\n%s' % (e.resp.status, e.content))
