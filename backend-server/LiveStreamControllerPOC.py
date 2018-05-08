@@ -103,6 +103,6 @@ if __name__ == '__main__':
         list_broadcasts(youtube, args.broadcast_status)
         get_live_chats(youtube)
         # list_broadcasts(youtube, 'all')
-        list_streams(youtube)
+        # list_streams(youtube)
     except HttpError as e:
         print('An HTTP error %d occurred:\n%s' % (e.resp.status, e.content))
