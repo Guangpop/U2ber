@@ -7,6 +7,7 @@ from googleapiclient.errors import HttpError
 from oauth2client.file import Storage
 from oauth2client import client
 from oauth2client import tools
+from pprint import pprint
 
 CLIENT_SECRETS_FILE = 'client_secret.json'
 
@@ -23,6 +24,7 @@ def get_authenticated_service(flags):
     credentials = get_credentials(flags)
     return build(API_SERVICE_NAME, API_VERSION, credentials=credentials)
 
+liveChatId = ''
 
 # Retrieve a list of broadcasts with the specified status.
 def list_broadcasts(youtube_client, broadcast_status):
@@ -41,6 +43,8 @@ def list_broadcasts(youtube_client, broadcast_status):
 
         for broadcast in list_broadcasts_response.get('items', []):
             print('%s (%s)(liveChatId: %s)' % (broadcast['snippet']['title'], broadcast['id'], broadcast['snippet']['liveChatId']))
+            global liveChatId
+            liveChatId = broadcast['snippet']['liveChatId']
 
         list_broadcasts_request = youtube.liveBroadcasts().list_next(
             list_broadcasts_request, list_broadcasts_response)
@@ -61,15 +65,14 @@ def list_streams(youtube):
         for stream in list_streams_response.get("items", []):
             print("%s (%s)" % (stream["snippet"]["title"], stream["id"]))
 
-
         list_streams_request = youtube.liveStreams().list_next(
             list_streams_request, list_streams_response)
 
 
 def get_live_chats(youtube_client):
-    request = youtube_client.liveChatMessages().list(liveChatId='Cg0KC1l0X1VqaW5UeUI4', part='id,snippet')
+    request = youtube_client.liveChatMessages().list(liveChatId=liveChatId, part='id,snippet,authorDetails')
     response = request.execute()
-    print('{0}'.format(response))
+    pprint(response)
 
 
 
@@ -100,7 +103,7 @@ if __name__ == '__main__':
 
     youtube = get_authenticated_service(args)
     try:
-        list_broadcasts(youtube, args.broadcast_status)
+        list_broadcasts(youtube, 'active')
         get_live_chats(youtube)
         # list_broadcasts(youtube, 'all')
         # list_streams(youtube)
