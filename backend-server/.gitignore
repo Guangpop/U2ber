@@ -2,3 +2,4 @@ env-dev/
 venv/
 .idea/
 client_secret.json
+__pycache__/

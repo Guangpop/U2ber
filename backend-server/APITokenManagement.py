@@ -38,8 +38,3 @@ class OAuthTokenManager:
     def get_arg_parser(self):
         return self.parser
 
-
-if __name__ == '__main__':
-    oauth = OAuthTokenManager()
-    youtube = oauth.get_credentials()
-    print(youtube)

@@ -39,8 +39,6 @@ def list_broadcasts(youtube_client, broadcast_status):
     while list_broadcasts_request:
         list_broadcasts_response = list_broadcasts_request.execute()
 
-        # print('Response : {}'.format(list_broadcasts_response))
-
         for broadcast in list_broadcasts_response.get('items', []):
             print('%s (%s)(liveChatId: %s)' % (broadcast['snippet']['title'], broadcast['id'], broadcast['snippet']['liveChatId']))
             global liveChatId
@@ -61,7 +59,7 @@ def list_streams(youtube):
 
     while list_streams_request:
         list_streams_response = list_streams_request.execute()
-
+        pprint(list_streams_response)
         for stream in list_streams_response.get("items", []):
             print("%s (%s)" % (stream["snippet"]["title"], stream["id"]))
 
@@ -104,8 +102,8 @@ if __name__ == '__main__':
     youtube = get_authenticated_service(args)
     try:
         list_broadcasts(youtube, 'active')
-        get_live_chats(youtube)
+        # get_live_chats(youtube)
         # list_broadcasts(youtube, 'all')
-        # list_streams(youtube)
+        list_streams(youtube)
     except HttpError as e:
         print('An HTTP error %d occurred:\n%s' % (e.resp.status, e.content))
