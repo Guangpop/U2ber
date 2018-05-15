@@ -42,8 +42,6 @@ public:
     void drawDebugRects(LAppLive2DManager* manager) const;
 
     static LAppView* createDrawNode();
-
-    virtual void record();
     
     virtual void ffmpeg_encoder_set_frame_yuv_from_rgb(uint8_t *rgb);
     

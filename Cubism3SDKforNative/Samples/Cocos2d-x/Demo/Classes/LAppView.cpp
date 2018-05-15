@@ -11,6 +11,8 @@
 #include "LAppPal.hpp"
 #include "LAppModel.hpp"
 
+
+//////////////////////////////// FFMPEG //////////////////////////////////
 extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavutil/imgutils.h>
@@ -18,7 +20,7 @@ extern "C" {
 #include <libswscale/swscale.h>
 }
 
-//////////////////////////////// FFMPEG //////////////////////////////////
+
 
 GLubyte *pixels = NULL;
 static AVCodecContext *c = NULL;
@@ -93,7 +95,7 @@ void LAppView::onEnter()
     // 優先度100でディスパッチャーに登録
     this->getEventDispatcher()->addEventListenerWithFixedPriority(listener, 100);
     
-    ffmpeg_encoder_start("~/Downloads/tmp.mpg", AV_CODEC_ID_MPEG1VIDEO, 25, width, height);
+    ffmpeg_encoder_start("/Users/shoi/Downloads/tmp.mpg", AV_CODEC_ID_MPEG1VIDEO, 25, width, height);
 }
 
 void LAppView::onExit()
@@ -225,11 +227,6 @@ void LAppView::ffmpeg_encoder_glread_rgb(uint8_t **rgb, GLubyte **pixels, unsign
                 (*rgb)[cur_rgb + k] = (*pixels)[cur_gl + k];
         }
     }
-}
-
-void LAppView::record() {
-    auto director = Director::getInstance();
-    
 }
 
 //////////////////////////////// FFMPEG //////////////////////////////////

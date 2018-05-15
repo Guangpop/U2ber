@@ -38,19 +38,7 @@ public:
     @param  the pointer of the application
     */
     virtual void applicationWillEnterForeground();
-    
-    virtual void record();
-    
-    virtual void ffmpeg_encoder_set_frame_yuv_from_rgb(uint8_t *rgb);
-
-    virtual void ffmpeg_encoder_start(const char *filename, int codec_id, int fps, int width, int height);
-    
-    virtual void ffmpeg_encoder_finish(void);
-    
-    virtual void ffmpeg_encoder_encode_frame(uint8_t *rgb);
-    
-    virtual void ffmpeg_encoder_glread_rgb(uint8_t **rgb, GLubyte **pixels, unsigned int width, unsigned int height);
-    
+ 
 private:
     cocos2d::EventListenerCustom* _recreatedEventlistener;
 
